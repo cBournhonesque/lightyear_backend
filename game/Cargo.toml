@@ -1,0 +1,14 @@
+[package]
+name = "game"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+bevy = { version = "0.13.2" }
+once_cell = "1.19.0"
+crossbeam-channel = "0.5.12"
+wasm-bindgen = "0.2.92"

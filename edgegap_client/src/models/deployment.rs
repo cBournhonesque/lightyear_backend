@@ -26,8 +26,8 @@ pub struct Deployment {
     #[serde(rename = "ready")]
     pub ready: bool,
     /// if the deployment ACL is active
-    #[serde(rename = "whitelisting_active")]
-    pub whitelisting_active: bool,
+    #[serde(rename = "whitelisting_active", skip_serializing_if = "Option::is_none")]
+    pub whitelisting_active: Option<bool>,
     /// 
     #[serde(rename = "fqdn")]
     pub fqdn: String,
@@ -56,7 +56,7 @@ impl Deployment {
             public_ip,
             status,
             ready,
-            whitelisting_active,
+            whitelisting_active: Some(whitelisting_active),
             fqdn,
             ports: None,
             location: None,

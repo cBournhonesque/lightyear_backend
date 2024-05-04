@@ -17,8 +17,8 @@ pub struct SessionGet {
     #[serde(rename = "session_id")]
     pub session_id: String,
     /// Custom ID if Available
-    #[serde(rename = "custom_id")]
-    pub custom_id: String,
+    #[serde(rename = "custom_id", skip_serializing_if = "Option::is_none")]
+    pub custom_id: Option<String>,
     /// Current status of the session
     #[serde(rename = "status")]
     pub status: String,
@@ -35,8 +35,8 @@ pub struct SessionGet {
     #[serde(rename = "user_count")]
     pub user_count: i32,
     /// App version linked to the session
-    #[serde(rename = "app_id")]
-    pub app_id: i32,
+    #[serde(rename = "app_id", skip_serializing_if = "Option::is_none")]
+    pub app_id: Option<i32>,
     /// Session created at
     #[serde(rename = "create_time")]
     pub create_time: String,
@@ -52,8 +52,8 @@ pub struct SessionGet {
     /// IPS in the session
     #[serde(rename = "session_ips", skip_serializing_if = "Option::is_none")]
     pub session_ips: Option<Vec<crate::models::SessionUser>>,
-    #[serde(rename = "deployment")]
-    pub deployment: Box<crate::models::Deployment>,
+    #[serde(rename = "deployment", skip_serializing_if = "Option::is_none")]
+    pub deployment: Option<crate::models::Deployment>,
     /// When your Session is Linked, Unprocessable or in Error, we will POST the session's details on the webhook_url 
     #[serde(rename = "webhook_url", skip_serializing_if = "Option::is_none")]
     pub webhook_url: Option<String>,
@@ -63,19 +63,19 @@ impl SessionGet {
     pub fn new(session_id: String, custom_id: String, status: String, ready: bool, linked: bool, kind: String, user_count: i32, app_id: i32, create_time: String, elapsed: i32, deployment: crate::models::Deployment) -> SessionGet {
         SessionGet {
             session_id,
-            custom_id,
+            custom_id: Some(custom_id),
             status,
             ready,
             linked,
             kind,
             user_count,
-            app_id,
+            app_id: Some(app_id),
             create_time,
             elapsed,
             error: None,
             session_users: None,
             session_ips: None,
-            deployment: Box::new(deployment),
+            deployment: Some(deployment),
             webhook_url: None,
         }
     }

@@ -17,6 +17,21 @@ pub fn App() -> impl IntoView {
     view! {
         <Stylesheet id="leptos" href="/pkg/lightyear_backend.css"/>
 
+        // will store events that we want to send to the game
+        // - globalThis['innerSendGameEvent'] is a function from the game's wasm to send an event to the game
+        <script>
+            "
+            let pendingEvents = [];
+            function sendGameEvent(event) {
+                if (typeof globalThis['innerSendGameEvent'] !== 'function') {
+                    pendingEvents.push(event);
+                } else {
+                    globalThis['innerSendGameEvent'](event);
+                }
+            }
+            "
+        </script>
+
         // sets the document title
         <Title text="Welcome to Leptos"/>
 
@@ -29,6 +44,8 @@ pub fn App() -> impl IntoView {
             <main>
                 <Routes>
                     <Route path="" view=HomePage/>
+                    <Route path="/lobbies" view=HomePage/>
+                    <Route path="/game" view=components::game::Game/>
                 </Routes>
             </main>
         </Router>
